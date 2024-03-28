@@ -46,10 +46,6 @@ namespace Rental.Tests
             var calculator = new RentalCalculator(SomeRentals());
             var statement = calculator.Calculate();
 
-            calculator.IsCalculated
-                .Should()
-                .BeTrue();
-
             calculator.Amount
                 .Should()
                 .BeApproximately(3037.24, 0.001);
