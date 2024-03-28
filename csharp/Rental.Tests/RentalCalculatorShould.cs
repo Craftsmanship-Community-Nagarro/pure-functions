@@ -33,30 +33,35 @@ namespace Rental.Tests
         [Fact]
         public void Throw_An_Exception_When_No_Rentals()
         {
-            var calculator = new RentalCalculator(NoRentals());
-            calculator.Invoking(_ => _.Calculate())
+            var calculator = new RentalCalculator();
+            calculator.Invoking(_ => _.Calculate(NoRentals()))
                 .Should()
                 .Throw<InvalidOperationException>()
                 .WithMessage("No rentals on which perform calculation");
         }
 
         [Fact]
-        public void CalculateRentalsAndFormatStatement()
+        public void FormatStatement()
         {
-            var calculator = new RentalCalculator(SomeRentals());
-            var (formattedAmount, amount) = calculator.Calculate();
+            var formattedRentals = new RentalCalculator().Format(SomeRentals());
 
-            amount
-                .Should()
-                .BeApproximately(3037.24, 0.001);
-
-            formattedAmount.Should()
+            formattedRentals.Should()
                 .Be(
                     "09-10-2020 : Le Refuge des Loups (LA BRESSE) | 1089.9" + NewLine +
                     "12-10-2020 : Au pied de la Tour (NOUILLORC) | 1276.45" + NewLine +
                     "24-10-2020 : Le moulin du bonheur (GLANDAGE) | 670.89" + NewLine +
                     "Total amount | 3037.2400000000002"
                 );
+        }
+
+        [Fact]
+        public void CalculateRentals()
+        {
+            var amount = new RentalCalculator().Calculate(SomeRentals());
+
+            amount
+                .Should()
+                .BeApproximately(3037.24, 0.001);
         }
     }
 }

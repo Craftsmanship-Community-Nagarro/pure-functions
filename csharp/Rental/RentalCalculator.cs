@@ -5,33 +5,35 @@ namespace Rental
 {
     public class RentalCalculator
     {
-        private readonly IEnumerable<Rental> _rentals;
-
-        public RentalCalculator(IEnumerable<Rental> rentals) => _rentals = rentals;
-
-        public (string, double) Calculate()
+        public double Calculate(IEnumerable<Rental> rentals)
         {
-            var amount = 0d;
-            if (!_rentals.Any())
-            {
-                throw new InvalidOperationException("No rentals on which perform calculation");
-            }
+            CheckForRentals(rentals);
+
+            return rentals.Sum(x => x.Amount);
+        }
+
+        public string Format(IEnumerable<Rental> rentals)
+        {
+            CheckForRentals(rentals);
 
             var result = new StringBuilder();
 
-            foreach (var rental in _rentals)
-            {
-                amount += rental.Amount;
+            result.Append(string.Join(Environment.NewLine, rentals.Select(FormatLine)));
 
-                result.Append(FormatLine(rental, rental.Amount));
-            }
+            result.Append($"{Environment.NewLine}Total amount | {Calculate(rentals).ToString(CultureInfo.InvariantCulture)}");
 
-            result.Append($"Total amount | {amount.ToString(CultureInfo.InvariantCulture)}");
-
-            return (result.ToString(), amount);
+            return result.ToString();
         }
 
-        private string FormatLine(Rental rental, double amount)
-            => $"{rental.Date.ToString("dd-MM-yyyy")} : {rental.Label} | {amount.ToString(CultureInfo.InvariantCulture)}{Environment.NewLine}";
+        private static void CheckForRentals(IEnumerable<Rental> rentals)
+        {
+            if (!rentals.Any())
+            {
+                throw new InvalidOperationException("No rentals on which perform calculation");
+            }
+        }
+
+        private string FormatLine(Rental rental)
+            => $"{rental.Date.ToString("dd-MM-yyyy")} : {rental.Label} | {rental.Amount.ToString(CultureInfo.InvariantCulture)}";
     }
 }
