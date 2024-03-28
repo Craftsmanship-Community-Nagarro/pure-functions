@@ -37,9 +37,9 @@ public class rental_calculator_should {
 
         assertTrue(calculator.isCalculated());
         assertEquals(3037.24, calculator.getAmount(), 0.01);
-        assertEquals("2020-10-09 : Le Refuge des Loups (LA BRESSE) | 1089.900000 \n" +
-                "2020-10-12 : Au pied de la Tour (NOUILLORC) | 1276.450000 \n" +
-                "2020-10-24 : Le moulin du bonheur (GLANDAGE) | 670.890000 \n" +
-                "Total amount | 3037.240000", statement);
+        assertEquals("2020-10-09 : Le Refuge des Loups (LA BRESSE) | 1089,900000 \n" +
+                "2020-10-12 : Au pied de la Tour (NOUILLORC) | 1276,450000 \n" +
+                "2020-10-24 : Le moulin du bonheur (GLANDAGE) | 670,890000 \n" +
+                "Total amount | 3037,240000", statement);
     }
 }
