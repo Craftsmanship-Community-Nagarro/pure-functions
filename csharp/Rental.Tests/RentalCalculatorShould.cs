@@ -44,13 +44,13 @@ namespace Rental.Tests
         public void CalculateRentalsAndFormatStatement()
         {
             var calculator = new RentalCalculator(SomeRentals());
-            var statement = calculator.Calculate();
+            var (formattedAmount, amount) = calculator.Calculate();
 
-            calculator.Amount
+            amount
                 .Should()
                 .BeApproximately(3037.24, 0.001);
 
-            statement.Should()
+            formattedAmount.Should()
                 .Be(
                     "09-10-2020 : Le Refuge des Loups (LA BRESSE) | 1089.9" + NewLine +
                     "12-10-2020 : Au pied de la Tour (NOUILLORC) | 1276.45" + NewLine +

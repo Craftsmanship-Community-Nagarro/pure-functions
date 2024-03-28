@@ -6,12 +6,12 @@ namespace Rental
     public class RentalCalculator
     {
         private readonly IEnumerable<Rental> _rentals;
-        public double Amount { get; private set; }
 
         public RentalCalculator(IEnumerable<Rental> rentals) => _rentals = rentals;
 
-        public string Calculate()
+        public (string, double) Calculate()
         {
+            var amount = 0d;
             if (!_rentals.Any())
             {
                 throw new InvalidOperationException("No rentals on which perform calculation");
@@ -21,14 +21,14 @@ namespace Rental
 
             foreach (var rental in _rentals)
             {
-                Amount += rental.Amount;
+                amount += rental.Amount;
 
                 result.Append(FormatLine(rental, rental.Amount));
             }
 
-            result.Append($"Total amount | {Amount.ToString(CultureInfo.InvariantCulture)}");
+            result.Append($"Total amount | {amount.ToString(CultureInfo.InvariantCulture)}");
 
-            return result.ToString();
+            return (result.ToString(), amount);
         }
 
         private string FormatLine(Rental rental, double amount)
